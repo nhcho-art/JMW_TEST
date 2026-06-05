@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JMW VOC Dashboard v5.0</title>
+<title>JMW VOC Dashboard v5.1</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
@@ -243,7 +243,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 <aside class="sidebar">
   <div class="sb-logo">
     <div class="sb-brand"><div class="sb-dot"></div>JMW VOC</div>
-    <div class="sb-ver">Online Monitor v5.0</div>
+    <div class="sb-ver">Online Monitor v5.1</div>
   </div>
   <nav class="sb-nav">
     <div class="sb-sec">대시보드</div>
@@ -261,7 +261,9 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
     <div class="sb-info" id="sb-info">마지막 조회: -<br>자동: 09:00 / 15:00</div>
     <div class="ver-toggle" onclick="toggleVer()"><span>📋 업데이트 내역</span><span id="ver-arrow">▾</span></div>
     <div class="ver-history" id="ver-history">
-      <div class="ver-current">v5.0 · 2026.06.05</div>
+      <div class="ver-current">v5.1 · 2026.06.05</div>
+      <div>· CORS 오류 수정 (POST→GET)</div>
+      <div class="ver-old">v5.0 · 2026.06.05</div>
       <div>· 다크 프로 디자인 전면 개편</div>
       <div>· 버튼 5개 분리 조회</div>
       <div>· VOC 간단 요약 (웹서치 없음)</div>
@@ -622,12 +624,11 @@ const BTN_MAP={prices:'btn-price',ranks:'btn-rank',competitors:'btn-comp',voc:'b
 async function scanItem(action){
   if(!SCRIPT_URL){showToast('설정에서 Apps Script URL을 먼저 입력해주세요','amber');goPage(7,document.querySelectorAll('.nb')[7]);return;}
   const btn=document.getElementById(BTN_MAP[action]);
-  if(btn){btn.classList.add('loading');btn.innerHTML='<span class="spinner"></span> '+(btn.textContent.trim());}
+  if(btn){btn.classList.add('loading');btn.innerHTML='<span class="spinner"></span> '+btn.textContent.trim();}
   await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
   showLoading(action);
   try{
-    const res=await fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({action:'scan_'+action})});
+    const res=await fetch(`${SCRIPT_URL}?action=scan_${action}&t=${Date.now()}`);
     const json=await res.json();
     if(json.status==='ok'){
       applyPartialData(action,json.data);
@@ -651,8 +652,7 @@ async function scanAll(){
   await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
   showLoading('all');
   try{
-    const res=await fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({action:'scan_all'})});
+    const res=await fetch(`${SCRIPT_URL}?action=scan_all&t=${Date.now()}`);
     const json=await res.json();
     if(json.status==='ok'){await loadAllData();}
     else throw new Error(json.message);
@@ -982,23 +982,23 @@ function renderCompManage(){
 }
 function openCompModal(){document.getElementById('comp-modal').classList.add('on');}
 function closeCompModal(){document.getElementById('comp-modal').classList.remove('on');}
-async function submitComp(){
-  if(!SCRIPT_URL){showToast('Apps Script URL을 먼저 설정해주세요','amber');return;}
-  const c={brand:document.getElementById('cf-brand').value.trim(),model:document.getElementById('cf-model').value.trim(),category:document.getElementById('cf-cat').value};
-  if(!c.brand||!c.model){showToast('브랜드와 모델명을 입력해주세요','amber');return;}
-  try{const res=await fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'add_competitor',competitor:c})});
-  const json=await res.json();if(json.status==='ok'){showToast('✅ 추가 완료','teal');closeCompModal();await loadAllData();renderCompManage();}
-  }catch(e){showToast('❌ 오류: '+e.message,'red');}
-}
-async function toggleComp(brand,model){
-  try{await fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'toggle_competitor',brand,model})});
-  await loadAllData();renderCompManage();}catch(e){showToast('❌ 오류','red');}
-}
-async function deleteComp(brand,model){
-  if(!confirm(`"${brand} ${model}"을 삭제할까요?`))return;
-  try{await fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete_competitor',brand,model})});
-  showToast('✅ 삭제 완료','teal');await loadAllData();renderCompManage();}catch(e){showToast('❌ 오류','red');}
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // ════ 모델 모달 ════
 function openAddModal(){
@@ -1040,8 +1040,8 @@ async function submitModel(){
   if(!model.sku){showToast('품번을 입력해주세요','amber');return;}
   try{
     const action=editingSku?'update_model':'add_model';
-    const body=editingSku?{action,sku:editingSku,model}:{action,model};
-    const res=await fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    const params=editingSku?`action=${action}&sku=${encodeURIComponent(editingSku)}&data=${encodeURIComponent(JSON.stringify(model))}`:`action=${action}&data=${encodeURIComponent(JSON.stringify(model))}`;
+    const res=await fetch(`${SCRIPT_URL}?${params}&t=${Date.now()}`);
     const json=await res.json();
     if(json.status==='ok'){showToast(editingSku?'✅ 수정 완료':'✅ 추가 완료','teal');closeModal();await loadAllData();}
     else showToast('❌ 실패: '+json.message,'red');
@@ -1050,7 +1050,7 @@ async function submitModel(){
 async function deleteModelConfirm(){
   if(!editingSku||!confirm(`"${editingSku}" 모델을 삭제할까요?`))return;
   try{
-    const res=await fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete_model',sku:editingSku})});
+    const res=await fetch(`${SCRIPT_URL}?action=delete_model&sku=${encodeURIComponent(editingSku)}&t=${Date.now()}`);
     const json=await res.json();
     if(json.status==='ok'){showToast('✅ 삭제 완료','teal');closeModal();await loadAllData();}
     else showToast('❌ 실패: '+json.message,'red');
