@@ -235,7 +235,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--cream);color:var(--t
 </head>
 <body>
 
-<!-- 로딩 오버레이 -->
 <div class="loading-overlay" id="loading-overlay">
   <div class="loading-box">
     <div class="loading-icon" id="loading-icon">🔍</div>
@@ -250,7 +249,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--cream);color:var(--t
   </div>
 </div>
 
-<!-- 사이드바 -->
 <aside class="sidebar">
   <div class="sb-logo">
     <div class="sb-brand">
@@ -276,20 +274,13 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--cream);color:var(--t
     <div class="ver-toggle" onclick="toggleVer()"><span>📋 업데이트 내역</span><span id="ver-arrow">▾</span></div>
     <div class="ver-history" id="ver-history">
       <div class="ver-cur">v5.2 · 2026.06.05</div>
-      <div>· 전면 리디자인 (Crowz 스타일)</div>
-      <div>· toggleComp 등 버그 수정</div>
-      <div>· 네이버 직접 URL 차단 대응</div>
-      <div class="ver-old">v5.1 · 2026.06.05</div>
-      <div>· CORS 오류 수정 (POST→GET)</div>
-      <div class="ver-old">v5.0 · 2026.06.05</div>
-      <div>· 버튼 5개 분리, VOC 요약</div>
-      <div class="ver-old">v4.x · 2026.06.04</div>
-      <div>· 순위·경쟁사, 경쟁사관리</div>
+      <div>· JSON 파싱 오류 완전수정</div>
+      <div>· 가격 숫자비교 버그수정</div>
+      <div>· 네이버 URL 차단 우회적용</div>
     </div>
   </div>
 </aside>
 
-<!-- 메인 -->
 <div class="main">
   <div class="topbar">
     <div class="topbar-title" id="topbar-title">종합현황 <span>문제 있는 항목만</span></div>
@@ -303,7 +294,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--cream);color:var(--t
     </div>
   </div>
 
-  <!-- PAGE 0: 종합현황 -->
   <div class="pg on" id="p0">
     <div class="g5">
       <div class="kpi">
@@ -349,7 +339,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--cream);color:var(--t
     </div>
   </div>
 
-  <!-- PAGE 1: 가격 모니터링 -->
   <div class="pg" id="p1">
     <div class="g4" style="margin-bottom:14px;">
       <div class="kpi"><div class="kpi-icon" style="background:rgba(74,144,217,.1);">📊</div><div class="kpi-label">총 모니터링</div><div class="kpi-val kv-blue" id="p1-total">-</div><div class="kpi-unit">개 모델</div></div>
@@ -387,7 +376,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--cream);color:var(--t
     </div>
   </div>
 
-  <!-- PAGE 2: 순위·경쟁사 -->
   <div class="pg" id="p2">
     <div class="g2">
       <div>
@@ -417,7 +405,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--cream);color:var(--t
     </div></div>
   </div>
 
-  <!-- PAGE 3: VOC·리뷰 -->
   <div class="pg" id="p3">
     <div id="voc-summary-wrap"></div>
     <div class="stat-box full">
@@ -444,7 +431,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--cream);color:var(--t
     </div></div>
   </div>
 
-  <!-- PAGE 4: 알림 로그 -->
   <div class="pg" id="p4">
     <div class="sec-title">🔔 알림 로그 <span class="bdg b-red" id="log-badge">0건</span></div>
     <div class="card full"><div class="card-inner">
@@ -459,7 +445,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--cream);color:var(--t
     </div></div>
   </div>
 
-  <!-- PAGE 5: 모델 관리 -->
   <div class="pg" id="p5">
     <div class="sec-title">📦 모델 관리 <span class="bdg b-coral" id="model-badge">0개</span>
       <button class="tbtn primary" onclick="openAddModal()" style="margin-left:auto;">+ 신규 추가</button>
@@ -481,7 +466,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--cream);color:var(--t
     </div></div>
   </div>
 
-  <!-- PAGE 6: 경쟁사 관리 -->
   <div class="pg" id="p6">
     <div class="sec-title">🏢 경쟁사 관리 <span class="bdg b-purple" id="comp-manage-badge">0개</span>
       <button class="tbtn primary" onclick="openCompModal()" style="margin-left:auto;">+ 추가</button>
@@ -494,7 +478,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--cream);color:var(--t
     </div></div>
   </div>
 
-  <!-- PAGE 7: 설정 -->
   <div class="pg" id="p7">
     <div class="sec-title">⚙️ 설정</div>
     <div class="card full"><div class="card-inner">
@@ -523,7 +506,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--cream);color:var(--t
   </div>
 </div>
 
-<!-- 모델 모달 -->
 <div class="modal-overlay" id="model-modal">
   <div class="modal">
     <div class="modal-title"><span id="modal-title-text">📦 모델 추가</span><button class="modal-close" onclick="closeModal()">×</button></div>
@@ -553,7 +535,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--cream);color:var(--t
   </div>
 </div>
 
-<!-- 경쟁사 모달 -->
 <div class="modal-overlay" id="comp-modal">
   <div class="modal" style="width:380px;">
     <div class="modal-title">🏢 경쟁사 추가 <button class="modal-close" onclick="closeCompModal()">×</button></div>
@@ -588,6 +569,9 @@ const BTN_LABELS = {prices:'💰 가격 조회', ranks:'🏆 순위 조회', com
 const SCAN_ICONS = {prices:'💰', ranks:'🏆', competitors:'🏢', voc:'💬', all:'🔄'};
 const SCAN_LABELS = {prices:'가격 조회 중...', ranks:'순위 조회 중...', competitors:'경쟁사 가격 조회 중...', voc:'VOC 수집 중...', all:'전체 데이터 불러오는 중...'};
 const SCAN_ETA = {prices:'약 1~2분 소요', ranks:'약 30초~1분', competitors:'약 30초~1분', voc:'약 1~2분 소요', all:'약 3~5분 소요'};
+
+// 숫자로 정제해주는 도우미 (HTML에서도 한 번 더 필터링)
+const parseNum = (v) => (v === null || v === undefined || v === '-' || v === '') ? null : parseInt(String(v).replace(/[^0-9]/g, ''), 10);
 
 // ════ 네비게이션 ════
 function goPage(i, btn) {
@@ -692,8 +676,8 @@ function applyPartialData(action, data) {
     priceData = {};
     (Array.isArray(data) ? data : []).forEach(r => {
       priceData[r.SKU] = {
-        쿠팡: r['쿠팡'], 네이버: r['네이버'], '11번가': r['11번가'], 'G마켓': r['G마켓'],
-        baseline: r['기준가'], seller: r['셀러'],
+        쿠팡: parseNum(r['쿠팡']), 네이버: parseNum(r['네이버']), '11번가': parseNum(r['11번가']), 'G마켓': parseNum(r['G마켓']),
+        baseline: parseNum(r['기준가']), seller: r['셀러'],
         쿠팡_상태: r['쿠팡_상태'], 네이버_상태: r['네이버_상태'],
         '11번가_상태': r['11번가_상태'], 'G마켓_상태': r['G마켓_상태'],
         쿠팡_url: r['쿠팡_url'], 네이버_url: r['네이버_url'],
@@ -732,8 +716,8 @@ async function loadAllData() {
     priceData = {};
     (d.prices || []).forEach(r => {
       priceData[r.SKU] = {
-        쿠팡: r['쿠팡'], 네이버: r['네이버'], '11번가': r['11번가'], 'G마켓': r['G마켓'],
-        baseline: r['기준가'], seller: r['셀러'],
+        쿠팡: parseNum(r['쿠팡']), 네이버: parseNum(r['네이버']), '11번가': parseNum(r['11번가']), 'G마켓': parseNum(r['G마켓']),
+        baseline: parseNum(r['기준가']), seller: r['셀러'],
         쿠팡_상태: r['쿠팡_상태'], 네이버_상태: r['네이버_상태'],
         '11번가_상태': r['11번가_상태'], 'G마켓_상태': r['G마켓_상태'],
         쿠팡_url: r['쿠팡_url'], 네이버_url: r['네이버_url'],
@@ -753,6 +737,8 @@ function renderAll() {
   renderRankPage();
   renderVocPage();
   renderLogPage();
+  renderModelTable();
+  renderCompManage();
   updateBadges();
 }
 
@@ -844,14 +830,14 @@ function renderPricePage() {
     const cells = CHNLS.map(ch => {
       if (!pd) return `<td class="center"><span class="p-na">-</span></td>`;
       const p = pd[ch], url = pd[ch+'_url'] || '';
-      if (!p) return `<td class="center">${url?`<a href="${url}" target="_blank" style="font-size:12px;color:var(--text3);text-decoration:none;" title="직접 확인">🔍</a>`:'<span class="p-na">-</span>'}</td>`;
+      if (!p) return `<td class="center">${url?`<a href="${url}" target="_blank" rel="noopener noreferrer" style="font-size:12px;color:var(--text3);text-decoration:none;" title="직접 확인">🔍</a>`:'<span class="p-na">-</span>'}</td>`;
       let cls = 'p-ok', ic = '';
       if (b) {
         if (p < b) { cls='p-danger'; ic='🚨'; rs='danger'; danger++; }
         else if (p < b*1.1) { cls='p-warn'; ic='⚠️'; if(rs!=='danger')rs='warn'; warn++; }
         else tot++;
       } else tot++;
-      const lo = url ? `<a href="${url}" target="_blank" style="text-decoration:none;">` : '';
+      const lo = url ? `<a href="${url}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">` : '';
       const lc = url ? '</a>' : '';
       return `<td class="center">${lo}<span class="${cls}">${ic}${p?.toLocaleString()}${url?'<sup style="font-size:9px;opacity:.5;">↗</sup>':''}</span>${lc}</td>`;
     }).join('');
